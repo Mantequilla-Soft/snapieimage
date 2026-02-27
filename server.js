@@ -117,7 +117,8 @@ app.post('/upload', authenticateAPIKey, (req, res) => {
     try {
       // Validate image with Sharp (will throw on invalid images)
       const metadata = await sharp(req.file.buffer).metadata();
-      console.log(`Processing ${metadata.format} image: ${metadata.width}x${metadata.height}`);
+      const isGif = metadata.format === 'gif';
+      console.log(`Processing ${metadata.format} image: ${metadata.width}x${metadata.height}${isGif ? ' (animated)' : ''}`);
       
       // Generate safe filename
       const filename = generateSafeFilename();
@@ -129,9 +130,15 @@ app.post('/upload', authenticateAPIKey, (req, res) => {
       }
       
       // Process and optimize image
+      // Preserve animation for GIFs
+      const webpOptions = { quality: 80, effort: 4 };
+      if (isGif) {
+        webpOptions.animated = true;
+      }
+      
       await sharp(req.file.buffer)
         .rotate()  // Auto-rotate based on EXIF orientation
-        .webp({ quality: 80, effort: 4 })
+        .webp(webpOptions)
         .toFile(outputPath);
       
       const imageUrl = `${config.baseUrl}/images/${filename}`;
