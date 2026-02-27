@@ -1,0 +1,27 @@
+{
+  "name": "image-server",
+  "version": "1.0.0",
+  "description": "Simple image upload and optimization server with WebP conversion",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "image",
+    "upload",
+    "optimization",
+    "webp",
+    "sharp",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "multer": "^2.0.2",
+    "sharp": "^0.33.2"
+  }
+}
