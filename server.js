@@ -136,7 +136,7 @@ app.post('/upload', authenticateAPIKey, (req, res) => {
         webpOptions.animated = true;
       }
       
-      await sharp(req.file.buffer)
+      await sharp(req.file.buffer, isGif ? { animated: true } : {})
         .rotate()  // Auto-rotate based on EXIF orientation
         .webp(webpOptions)
         .toFile(outputPath);
